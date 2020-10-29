@@ -1,27 +1,24 @@
-import React, { Component } from "react";
-import { withTranslation } from "react-i18next";
+import './boardings-view.css';
 
-import BasicInfoSection from "./basic-info/basic-info.section";
-import VesselSection from "./vessel/vessel.section";
-import CrewSection from "./crew/crew.section";
-import ActivitySection from "./activity/activity.section";
-import CatchSection from "./catch/catch.section";
-import VersionControlPanel from "../version-control/version-control.panel";
+import React, { Component } from 'react';
+
+import ActivitySection from './activity/activity.section';
+import BasicInfoSection from './basic-info/basic-info.section';
+import BoardingService from './../../../services/boarding.service';
+import CatchSection from './catch/catch.section';
+import CrewSection from './crew/crew.section';
+import { EDIT_BOARDING_PAGE } from '../../../root/root.constants.js';
+import RiskIcon from '../../partials/risk-icon/risk-icon.component';
+import VersionControlPanel from '../version-control/version-control.panel';
+import VesselSection from './vessel/vessel.section';
+import ViolationsSection from './violations/violations.section';
+import history from '../../../root/root.history';
+import { withTranslation } from 'react-i18next';
 
 //TODO: Fix the modules to correctly view
-/*import ViolationsSection from './violations/violations.section';
-import SeizuresSection from './seizures/seizures.section';
+/*import SeizuresSection from './seizures/seizures.section';
 import RisksSection from './risks/risks.section';
 import NotesSection from './notes/notes.section';*/
-
-import RiskIcon from "../../partials/risk-icon/risk-icon.component";
-
-import history from "../../../root/root.history";
-import { EDIT_BOARDING_PAGE } from "../../../root/root.constants.js";
-
-import BoardingService from "./../../../services/boarding.service";
-
-import "./boardings-view.css";
 
 const boardingService = BoardingService.getInstance();
 
@@ -44,7 +41,7 @@ class BoardingViewPage extends Component {
   }
 
   goEdit = () => {
-    history.push(EDIT_BOARDING_PAGE.replace(":id", this.state.boarding._id));
+    history.push(EDIT_BOARDING_PAGE.replace(':id', this.state.boarding._id));
   };
 
   showVersions = () => {
@@ -60,7 +57,7 @@ class BoardingViewPage extends Component {
         <div className="flex-row justify-between standard-view title-row">
           <div className="flex-column margin-top margin-left">
             <div className="item-label">
-              {t("BOARDING_PAGE.VIEW_BOARDING.BOARDING")}
+              {t('BOARDING_PAGE.VIEW_BOARDING.BOARDING')}
             </div>
             {boarding && (
               <div className="flex-row align-center">
@@ -71,7 +68,7 @@ class BoardingViewPage extends Component {
                   safetyLevel={
                     boarding
                       ? boarding.inspection.summary.safetyLevel.level
-                      : ""
+                      : ''
                   }
                 />
               </div>
@@ -79,15 +76,17 @@ class BoardingViewPage extends Component {
           </div>
           <div className="flex-column align-end edit-btn">
             <button className="blue-btn" onClick={this.goEdit}>
-              {t("BUTTONS.EDIT_BOARDING")}
+              {t('BUTTONS.EDIT_BOARDING')}
             </button>
             {boarding && (
               <div
                 className="item-label modified-info margin-bottom margin-right"
                 onClick={this.showVersions}
-              >{`${t("BOARDING_PAGE.VIEW_BOARDING.LAST_MODIFIED")}
+              >{`${t('BOARDING_PAGE.VIEW_BOARDING.LAST_MODIFIED')}
                 ${new Date(boarding ? boarding.date : null).toLocaleString()}
-                by ${boarding.reportingOfficer.name.first} ${boarding.reportingOfficer.name.last}`}</div>
+                by ${boarding.reportingOfficer.name.first} ${
+                boarding.reportingOfficer.name.last
+              }`}</div>
             )}
           </div>
           {versionsVisible && (
@@ -104,9 +103,10 @@ class BoardingViewPage extends Component {
             <CrewSection dataObject={boarding} />
             <ActivitySection dataObject={boarding} />
             <CatchSection dataObject={boarding} />
+            <ViolationsSection dataObject={boarding} />
           </div>
         ) : (
-          <div className="items-amount">{t("LOADING.LOADING")}</div>
+          <div className="items-amount">{t('LOADING.LOADING')}</div>
         )}
       </div>
     );
@@ -115,7 +115,6 @@ class BoardingViewPage extends Component {
 
 //TODO: Use this sections when implemented
 //<SeizuresSection dataObject={this.state.dataObject}></SeizuresSection>
-//<ViolationsSection dataObject={this.state.dataObject}></ViolationsSection>
 //<RisksSection dataObject={this.state.dataObject}></RisksSection>
 //<NotesSection dataObject={this.state.dataObject}></NotesSection>
-export default withTranslation("translation")(BoardingViewPage);
+export default withTranslation('translation')(BoardingViewPage);
